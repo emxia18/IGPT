@@ -1,0 +1,7 @@
+[
+{"ID": 1273064517303140446, "Timestamp": "2024-08-13 23:43:53", "Contents": "", "Attachments": ""},
+{"ID": 1273064492082921502, "Timestamp": "2024-08-13 23:43:47", "Contents": "https://maa.org/math-competitions/william-lowell-putnam-mathematical-competition", "Attachments": ""},
+{"ID": 1273027455363579904, "Timestamp": "2024-08-13 21:16:37", "Contents": "Hi Hailey, thank you so much for offering to help. Though the code to our database is currently private, we can share it with your github it that would be easiest for you.\n\nThe current format of the data is one json file, each element of the dataset has the following properties:\nid, original problem, original solution, problem, solution, source, type (we want to be using the problem/solution and not the originals). \n\nSo far we've been trying to follow the publically avaible instructions on how to create a new task and run lm_eval.simple_evaluate. We've made a yaml file and utils file under the tasks folder (where other tasks such as the MATH dataset is stored), but we have been receiving errors. Is directly creating a new task under our cloned lm-eval folder the best approach?", "Attachments": ""},
+{"ID": 1256367749395906705, "Timestamp": "2024-06-28 21:56:53", "Contents": "it says # unknown lol", "Attachments": ""},
+{"ID": 1254856329152172115, "Timestamp": "2024-06-24 17:51:02", "Contents": "谢谢", "Attachments": ""}
+]
