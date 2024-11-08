@@ -101,7 +101,9 @@ trainer = Trainer(
 trainer.train()
 
 # Save the fine-tuned model
-model.save_pretrained(output_dir)
+model.save_pretrained("model_directory", max_shard_size="2GB") 
 tokenizer.save_pretrained(output_dir)
+
+
 
 print("Model fine-tuning complete and saved to:", output_dir)
