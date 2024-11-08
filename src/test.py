@@ -2,7 +2,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 # Load the fine-tuned model
-model_path = "./fine_tuned_model"
+model_path = "./fine_tune/gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(model_path)
 
@@ -13,6 +13,15 @@ def generate_reply(input_text):
     return reply
 
 # Example usage:
-input_text = "Name of sender: Can you meet me at 5?\n"
-reply = generate_reply(input_text)
-print("Reply:", reply)
+input_text = [
+    'Bruno Dumonts friend is having a conversation with him. Respond on his behalf.',
+    'whens ur pwr 2',
+    'im thinking of doing 229 and 171 and this robotics class called 123, at least thats the plan rn',
+    'idk yet, im still deciding \n but i dont rly wanna do 229 and 111 \n like tgt \n and im p sure on 229 \n wbu',
+    'i was also considering taking cs224w',
+    'oh fuck yah \n bro i dont wanna overload tho ykwom',
+]
+
+for text in input_text:
+    reply = generate_reply(text)
+    print("Reply:", reply)

@@ -8,8 +8,9 @@ import torch
 
 # Set up paths and model parameters
 data_folder = "data/bruno/processed_data_folder"
-output_dir = "./fine_tuned_model"
+os.environ["WANDB_DISABLED"] = "true"
 model_name = "gpt2"  # You can use "gpt2-medium" or other variants for better results
+output_dir = f"./fine_tune/{model_name}"
 batch_size = 2
 epochs = 3
 
@@ -101,9 +102,7 @@ trainer = Trainer(
 trainer.train()
 
 # Save the fine-tuned model
-model.save_pretrained("model_directory", max_shard_size="2GB") 
+model.save_pretrained(output_dir, max_shard_size="2GB") 
 tokenizer.save_pretrained(output_dir)
-
-
 
 print("Model fine-tuning complete and saved to:", output_dir)
