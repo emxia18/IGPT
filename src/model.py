@@ -5,17 +5,24 @@ from transformers import Trainer
 from transformers import TrainingArguments
 from transformers import DataCollatorForLanguageModeling
 import torch
+from accelerate import init_empty_weights
+from transformers import LlamaForCausalLM
+
 
 # Set up paths and model parameters
-data_folder = "data/bruno/processed_data_folder"
+data_folder = "data/emily"
+data_file = "data/emily/discord_messages.txt"
 os.environ["WANDB_DISABLED"] = "true"
-model_name = "gpt2"  # You can use "gpt2-medium" or other variants for better results
-output_dir = f"./fine_tune/{model_name}"
-batch_size = 2
+model_name = "gpt2-medium"
+output_dir = f"./fine_tune/emily/{model_name}"
+batch_size = 1
 epochs = 3
 
 # Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+# with init_empty_weights():
+#     model = LlamaForCausalLM.from_pretrained(model_name, device_map='auto')
+# torch.cuda.empty_cache()
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
 tokenizer.pad_token = tokenizer.eos_token
@@ -27,28 +34,30 @@ def load_and_tokenize_data(data_folder, tokenizer):
     # Read all files in the data folder
     for file_name in os.listdir(data_folder):
         file_path = os.path.join(data_folder, file_name)
-        
-        with open(file_path, "r", encoding="utf-8") as f:
-            conversation = f.read().strip()
-            input_text = ""
-            
-            # Split on two newlines to get individual prompt-response pairs
-            for pair in conversation.split("\n\n"):
-                if pair.strip():  # Ensure we skip any blank segments
-                    split_index = pair.find("Bruno Dumont:")
-                    if split_index == -1:
-                        prompt = pair
-                        response = ""
-                    else:
-                        prompt = pair[:split_index]
-                        response = pair[split_index:]
-                    formatted_text = f"{prompt}\n{response}\n\n"  # Maintain the structure
-                    input_text += formatted_text
+        if file_path == data_file:
+            with open(file_path, "r", encoding="utf-8", errors="replace") as f:
+                conversation = f.read().strip()
+                input_text = ""
+                
+                # Split on two newlines to get individual prompt-response pairs
+                for pair in conversation.split("\n\n"):
+                    if pair.strip():  # Ensure we skip any blank segments
+                        formatted_text = pair
+                        # print(pair)
+                        # split_index = pair.find("Bruno Dumont:")
+                        # if split_index == -1:
+                        #     prompt = pair
+                        #     response = ""
+                        # else:
+                        #     prompt = pair[:split_index]
+                        #     response = pair[split_index:]
+                        # formatted_text = f"{prompt}\n{response}\n\n"  # Maintain the structure
+                        input_text += formatted_text
 
-            # Encode and add to the list of inputs
-            if input_text:
-                inputs.append(input_text)
-    
+                # Encode and add to the list of inputs
+                if input_text:
+                    inputs.append(input_text)
+
     # Tokenize all inputs in a single batch
     tokenized_inputs = tokenizer(inputs, return_tensors="pt", padding=True, truncation=True)
     return tokenized_inputs
@@ -85,6 +94,7 @@ training_args = TrainingArguments(
     logging_dir='./logs',
     logging_steps=100,
     evaluation_strategy="no",
+    fp16=True
 )
 
 # Initialize data collator
@@ -99,10 +109,11 @@ trainer = Trainer(
 )
 
 # Train the model
+# torch.cuda.empty_cache()
 trainer.train()
 
 # Save the fine-tuned model
-model.save_pretrained(output_dir, max_shard_size="2GB") 
+model.save_pretrained(output_dir, safe_serialization=False)
 tokenizer.save_pretrained(output_dir)
 
 print("Model fine-tuning complete and saved to:", output_dir)
