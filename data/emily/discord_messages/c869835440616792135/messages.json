@@ -1,0 +1,9 @@
+[
+{"ID": 1070963524026777640, "Timestamp": "2023-02-03 07:06:41", "Contents": "sorry i got hacked", "Attachments": ""},
+{"ID": 1070959741121077280, "Timestamp": "2023-02-03 06:51:39", "Contents": "watch general\nhttps://discord.gg/9ssZmYhQQ4", "Attachments": ""},
+{"ID": 1048759364086939699, "Timestamp": "2022-12-04 00:35:17", "Contents": "we don’t use photon vision, we connect via web interface for tuning", "Attachments": ""},
+{"ID": 871456497081647165, "Timestamp": "2021-08-01 18:16:59", "Contents": "hey, sorry for taking a bit to reply. basically in 2019 we used the limelight and vision PID to tune the throttle so that we could get everything lined up. \n\nhere's the repo from 2019 :https://github.com/frc1678/c2019-rewrite (im pretty sure its public, if not lmk and ill send you any relevant files)\n\nmore specifically, you should reference this line: https://github.com/frc1678/c2019-rewrite/blob/master/src/main/java/com/frc1678/c2019/subsystems/Drive.java#L222\n\nrelated files: \nhttps://github.com/frc1678/c2019-rewrite/blob/master/src/main/java/com/frc1678/c2019/subsystems/Limelight.java\nhttps://github.com/frc1678/c2019-rewrite/blob/f7b1c86ad9bc851476f3648a719324f9dae512b1/src/main/java/com/frc1678/c2019/subsystems/LimelightManager.java\n\nI hope this helps! feel free to ask me any clarifying questions if needed", "Attachments": ""},
+{"ID": 870156190317940836, "Timestamp": "2021-07-29 04:10:02", "Contents": "For sure! I'm a bit busy at the moment but I'll try to get back to you ASAP.", "Attachments": ""},
+{"ID": 869950337560219648, "Timestamp": "2021-07-28 14:32:03", "Contents": "Oh hi, nice to meet you!", "Attachments": ""},
+{"ID": 869950096945590323, "Timestamp": "2021-07-28 14:31:06", "Contents": "hey who’s this?", "Attachments": ""}
+]

@@ -2,8 +2,8 @@ import re
 import os
 
 # Define the folder containing the WhatsApp data
-input_folder = "whatsapp_data_folder"  # Replace this with your folder path
-output_folder = "processed_data_folder"  # Folder where the processed data will be saved
+input_folder = "data/emily/discord_messages"  # Replace this with your folder path
+output_folder = "data/emily/processed"  # Folder where the processed data will be saved
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
