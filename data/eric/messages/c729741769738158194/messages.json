@@ -1,0 +1,7 @@
+[
+{"ID": 1271218757913808978, "Timestamp": "2024-08-08 21:29:29", "Contents": "Awesome, thank you so much!", "Attachments": ""},
+{"ID": 1270989692787097692, "Timestamp": "2024-08-08 06:19:16", "Contents": "Our current dataset looks like a bunch of questions like this:\n{\n        \"Problem ID\": blah,\n        \"Problem\": blah,\n        \"Solution\": blah,\n        \"Problem Type\": blah\n},", "Attachments": ""},
+{"ID": 1270988689207595018, "Timestamp": "2024-08-08 06:15:17", "Contents": "I couldn't find any example datasets on the LM Harness Github page", "Attachments": ""},
+{"ID": 1270988642118012960, "Timestamp": "2024-08-08 06:15:06", "Contents": "If I want to make a dataset compatible with LM Harness, it would have to be a .jsonl file right? What would the dictionary keys have to be?", "Attachments": ""},
+{"ID": 1270988480272404491, "Timestamp": "2024-08-08 06:14:27", "Contents": "Hey all, I had a quick question and I was hoping I could find some help here", "Attachments": ""}
+]

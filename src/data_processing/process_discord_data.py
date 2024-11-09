@@ -3,9 +3,9 @@ import json
 import re
 import json
 
-# Specify the root directory where the folders are stored
-# root_dir = "data/emily/discord_messages"
-# output_file = "data/emily/discord_messages.txt"
+# # Specify the root directory where the folders are stored
+# root_dir = "IGPT/data/eric/messages"
+# output_file = "IGPT/data/eric/discord_messages.txt"
 
 # # Create or clear the output file
 # with open(output_file, 'w') as outfile:
@@ -63,8 +63,8 @@ def process_data(input_file, output_file):
             jsonl_file.write("\n")
 
 # Specify file paths
-input_file = "data/emily/discord_messages.txt"  # Replace with your input file path
-output_file = "data/emily/cleaned_discord_messages.jsonl"  # Replace with your desired output file path
+input_file = "IGPT/data/eric/discord_messages.txt"  # Replace with your input file path
+output_file = "IGPT/data/eric/cleaned_discord_messages.jsonl"  # Replace with your desired output file path
 
 # Process the data
 # process_data(input_file, output_file)
@@ -78,19 +78,20 @@ def parse_text(file_path):
             extracted_text.append(text_entry["text"][1:-1])
     return extracted_text
 
-input_file_path = 'data/emily/cleaned_discord_messages.jsonl'
+process_data(input_file=input_file, output_file = output_file)
+# input_file_path = 'IGPT/data/eric/cleaned_discord_messages.jsonl'
 
-# Output file path
-output_file_path = 'Bayes Model Emily/emily_messages.txt'
+# # Output file path
+# output_file_path = 'IGPT/Bayes Model Eric/eric_messages.txt'
 
-# Parse the text from the input file
-parsed_text = parse_text(input_file_path)
+# # Parse the text from the input file
+# parsed_text = parse_text(input_file_path)
 
-# Write the parsed text to the output file
-with open(output_file_path, 'w') as f:
-    for line in parsed_text:
-        f.write(line + '\n')
+# # Write the parsed text to the output file
+# with open(output_file_path, 'w') as f:
+#     for line in parsed_text:
+#         f.write(line + '\n')
 
-print(f"Parsed text has been written to {output_file_path}")
+# print(f"Parsed text has been written to {output_file_path}")
 
 
