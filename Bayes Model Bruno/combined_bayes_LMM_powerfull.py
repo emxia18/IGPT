@@ -6,9 +6,9 @@ import torch
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model_name = "meta-llama/Llama-2-7b-chat-hf"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+model_name = "mosaicml/mpt-7b-chat"
+tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir="./cache")
+model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir="./cache")
 
 
 message_classifier = joblib.load("message_classifier_model.joblib")

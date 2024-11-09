@@ -19,7 +19,7 @@ def test_model_as_emily(model, tokenizer, prompt, max_length=50, num_return_sequ
 
 if __name__ == "__main__":
     # Specify the path to the fine-tuned model and tokenizer
-    fine_tuned_model_path = "./fine_tuned/emily/checkpoint-250"  # Path to your fine-tuned model
+    fine_tuned_model_path = "./fine_tune/emily/checkpoint-6507"  # Path to your fine-tuned model
     tokenizer_name = "gpt2"  # Same tokenizer used during fine-tuning
 
     # Load the model and tokenizer

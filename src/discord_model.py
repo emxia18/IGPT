@@ -35,7 +35,7 @@ def prepare_data(data_path, tokenizer, max_length=512):
     """
     # Load the dataset from the JSONL file
     dataset = load_dataset("json", data_files={"train": data_path})
-    limited_dataset = dataset["train"].select(range(10000))
+    limited_dataset = dataset["train"]
     split_dataset = limited_dataset.train_test_split(test_size=0.2, shuffle=True, seed=42)
 
     # Define the tokenization function
