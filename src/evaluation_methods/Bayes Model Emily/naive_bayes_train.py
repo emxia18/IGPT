@@ -1,71 +1,55 @@
-import pandas as pd
-import re
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score, classification_report
+import torch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+import joblib
+import numpy as np
 
-with open("IGPT/src/evaluation_methods/Bayes Model Emily/emily_messages.txt", "r", encoding="utf-8") as f:
-    emily = f.readlines()
+model_name = "gpt2"
+tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+llm = GPT2LMHeadModel.from_pretrained(model_name)
 
-with open("IGPT/src/evaluation_methods/Bayes Model Emily/someone_else_messages.txt", "r", encoding="utf-8") as f:
-    other = f.readlines()
+message_classifier = joblib.load("message_classifier_model.joblib")
 
-print(len(emily), len(other))
-data = pd.DataFrame({
-    "Text": emily + other, 
-    "Label": ["emily"] * len(emily) + ["other"] * len(other)
-})
+def get_style_probability(text, classifier_model):
 
-print(data.head())
+    prob = classifier_model.predict_proba([text])[0][0]
+    return prob
 
-def preprocess(text):
-    text = re.sub(r"[^\w\s]", "", text)
-    text = text.lower()
-    return text.strip()
+def generate_response(prompt, max_length=50):
 
-data["Text"] = data["Text"].apply(preprocess)
+    input_ids = tokenizer.encode(prompt, return_tensors="pt")
+    response = prompt
 
-X = data["Text"]
-y = data["Label"]
+    for _ in range(max_length):
+        outputs = llm(input_ids)
+        logits = outputs.logits[:, -1, :]
 
-vectorizer = CountVectorizer()
-X_vectorized = vectorizer.fit_transform(X)
-X_train, X_test, y_train, y_test = train_test_split(X_vectorized, y, test_size=0.2, random_state=42)
-nb_model = MultinomialNB()
-nb_model.fit(X_train, y_train)
-y_pred = nb_model.predict(X_test)
+        llm_probs = torch.softmax(logits, dim=-1).detach().numpy().squeeze()
+        
+        combined_probs = []
 
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("Classification Report:\n", classification_report(y_test, y_pred))
+        for idx, word_prob in enumerate(llm_probs):
+            word = tokenizer.convert_ids_to_tokens([idx])[0]
+            temp_response = response + word.replace("Ġ", " ")
+ 
+            style_prob = get_style_probability(temp_response, message_classifier)
+            
+            combined_prob = word_prob * style_prob
+            combined_probs.append(combined_prob)
 
-new_texts = [
-    "i'm doing well",
-    "nothing crazy, just gonna vibe and see what happens",
-    "lol it’s been alright, kinda flew by tbh",
-    "i would love to but i can only make it at 5:30 instead of 6:00",
-    "not much, u wanna go hang out ?",
-    "i'M THINKING ABOUT HOW MUCH I HATE SCHOOL",
-    "i would love to go out with you later, but i have a lot i need to take care of first, i will let you know when i am free",
-    "ive j been contemplating my life decisions and how to be a good person",
-    "i'M FEELING A LITTLE OFF TODAY",
-    "not really, might just chill tbh",
-    "scroll on my phone for way too long lol",
-    "i had a great day, i went to the park with my friends and we played on the swings and i got a yummy ice cream",
-    "yes yes im so down, what is a good time for you?",
-    "i just wrap up the work i gotta do hehe",
-    "uh i think there was a new yt video i wanna watch but i cant cuz i have to do my homework",
-    "yesss theres this new coffee shop i wanna go try, do u wanna go tgt",
-    "i like to just chill and do nothing",
-    "yea for sure, what’s up?",
-    "maybe the weekend? idk lol",
-    "coffee first, then we’ll see",
-    "yesss ima be visiting la soon hehe",
-    "i just need to talk to someone, ive been feeling really down lately and i need someone to just listen to me and be there for me",
-    "hang w friends or like go out for snacks lol",
-    "maybe later, it sounds nice tho"
-]
-new_texts_vectorized = vectorizer.transform(new_texts)
-predictions = nb_model.predict(new_texts_vectorized)
+        combined_probs = np.array(combined_probs) / sum(combined_probs)
 
-print("Predictions:", predictions)
+        next_token_id = np.random.choice(range(len(combined_probs)), p=combined_probs)
+        next_token = tokenizer.convert_ids_to_tokens([next_token_id])[0]
+
+        if next_token == tokenizer.eos_token:
+            break
+
+        response += next_token.replace("Ġ", " ")
+        print(response)
+        input_ids = torch.cat([input_ids, torch.tensor([[next_token_id]])], dim=1)
+    
+    return response
+
+prompt_text = "Hey, how's it going?"
+response = generate_response(prompt_text)
+print("Generated response:", response)
