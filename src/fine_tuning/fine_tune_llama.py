@@ -38,10 +38,10 @@ def tokenize_function(examples):
 
 tokenized_dataset = dataset['train'].map(tokenize_function, batched=True)
 
-train_subset = list(islice(iter(tokenized_dataset), 10000))
-train_subset = Dataset.from_list(train_subset)
-eval_subset = list(islice(iter(tokenized_dataset), 2000))
-eval_subset = Dataset.from_list(eval_subset)
+tokenized_data_list = list(iter(tokenized_dataset))
+train_data, eval_data = train_test_split(tokenized_data_list, test_size=0.2, random_state=42)
+train_subset = Dataset.from_list(train_data)
+eval_subset = Dataset.from_list(eval_data)
 
 print(train_subset[0])
 

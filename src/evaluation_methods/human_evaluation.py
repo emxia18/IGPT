@@ -16,20 +16,27 @@ print("bot acc: ", (bot_corr / (bot_corr + bot_inc)))
 print("emily acc: ", (og_corr / (og_corr + og_inc)))
 
 categories = ("GPT", "Fine Tuned LLM", "Emily")
-correct = [gpt_corr, bot_corr, og_corr]
-incorrect = [gpt_inc, bot_inc, og_inc]
+correct = [gpt_corr / (gpt_corr + gpt_inc), bot_corr / (bot_corr + bot_inc), og_corr / (og_corr + og_inc)]
+incorrect = [gpt_inc / (gpt_corr + gpt_inc), bot_inc / (bot_corr + bot_inc), og_inc / (og_corr + og_inc)]
+
+nb_corr = [5 / 9, 7 / 9, 4 / 6]
+nb_inc = [4 / 9, 2 / 9, 2 / 6]
 
 x = np.arange(len(categories))
+bar_width = 0.3
+space = 0.05
 
-fig, ax = plt.subplots(figsize=(5, 5
-))
+fig, ax = plt.subplots(figsize=(8, 6))
 
-bar1 = ax.bar(x, correct, label='Correct', color='lightgreen', edgecolor='black')
-bar2 = ax.bar(x, incorrect, bottom=correct, label='Incorrect', color='lightcoral', edgecolor='black')
+bar1 = ax.bar(x - (bar_width + space) / 2, correct, bar_width, label='Human Correct', color='lightgreen', edgecolor='black')
+bar2 = ax.bar(x - (bar_width + space) / 2, incorrect, bar_width, bottom=correct, label='Human Incorrect', color='lightcoral', edgecolor='black')
+
+bar3 = ax.bar(x + (bar_width + space) / 2, nb_corr, bar_width, label='Naive Bayes Correct', color='darkgreen', edgecolor='black')
+bar4 = ax.bar(x + (bar_width + space) / 2, nb_inc, bar_width, bottom=nb_corr, label='Naive Bayes Incorrect', color='darkred', edgecolor='black')
 
 ax.set_xlabel("Categories")
-ax.set_ylabel("Question Count")
-ax.set_title("Human Evaluator Accuracy Distribution")
+ax.set_ylabel("Question Percentage")
+ax.set_title("Human vs Naive Bayes Evaluator Accuracy Distribution")
 ax.set_xticks(x)
 ax.set_xticklabels(categories)
 ax.legend(title="Accuracy")
@@ -68,7 +75,7 @@ ax.set_ylabel("Question Count")
 ax.set_title("Human Evaluator Accuracy Distribution")
 ax.set_xticks(x)
 ax.set_xticklabels(categories)
-ax.legend(title="Accuracy")
+ax.legend(title="Accuracy", bbox_to_anchor=(1.05, 1), loc='upper left')
 
 plt.tight_layout()
 plt.savefig("IGPT/src/evaluation_methods/eric_category_accuracy.png")
