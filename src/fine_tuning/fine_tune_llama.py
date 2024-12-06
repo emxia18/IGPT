@@ -5,7 +5,7 @@ from peft import LoraConfig, get_peft_model
 from datasets import Dataset
 from itertools import islice
 
-local_path = 'IGPT/data/bruno/processed_data.jsonl'
+local_path = 'IGPT/data/bruno/new_processed_data.jsonl'
 dataset = load_dataset('json', data_files=local_path, streaming=True)
 print(dataset)
 
@@ -17,8 +17,6 @@ tokenizer.pad_token = tokenizer.eos_token
 model = AutoModelForCausalLM.from_pretrained(model_name, use_auth_token=hf_token, load_in_8bit=True)
 
 print("Model and tokenizer loaded successfully!")
-
-# model = prepare_model_for_int8_training(model)
 
 lora_config = LoraConfig(
     r=8,

@@ -10,8 +10,32 @@ def main():
     model.to(device)
 
     input_list = [
-        "input: who are you?, output: ", 
-        "input: hi, how are you doing?, output: "]
+        "input: How are you doing?, output: ",
+    "input: What's your plans for the day?, output: ",
+    "input: How was your week?, output: ",
+    "input: Do you want to join me for dinner?, output: ",
+    "input: Are you doing anything tomorrow afternoon?, output: ",
+    "input: What are you thinking about right now?, output: ",
+    "input: Do you feel like going out later?, output: ",
+    "input: What’s been on your mind lately?, output: ",
+    "input: How are you feeling today?, output: ",
+    "input: Do you have any fun plans this weekend?, output: ",
+    "input: What do you usually do in the mornings?, output: ",
+    "input: Did you have a good day so far?, output: ",
+    "input: What are you craving to eat right now?, output: ",
+    "input: Do you want to hang out sometime?, output: ",
+    "input: How do you usually spend your evenings?, output: ",
+    "input: Did anything interesting happen today?, output: ",
+    "input: Do you want to try something new this week?, output: ",
+    "input: What’s your favorite thing to do on a lazy day?, output: ",
+    "input: Are you free to chat for a bit?, output: ",
+    "input: What’s something you’re excited about?, output: ",
+    "input: How do you like to start your day?, output: ",
+    "input: Is there anything you’re looking forward to?, output: ",
+    "input: Do you need help with anything right now?, output: ",
+    "input: What do you usually do for fun?, output: ",
+    "input: Do you feel like going for a walk?, output: "
+    ]
     for input in input_list:
         input_ids = tokenizer.encode(input, return_tensors="pt").to(device)
 
