@@ -49,7 +49,7 @@ accuracies = [22,19,16,16,16,16,15,15,14,14,14,14,13,13,12,12,11,10]
 plt.figure(figsize=(8, 6))
 plt.hist(accuracies, bins=range(min(accuracies), max(accuracies) + 2), align='left', edgecolor='black', color='skyblue')
 
-plt.title('Human Accuracy (from 24)')
+plt.title('Human Accuracy')
 plt.xlabel('Accuracies')
 plt.ylabel('Count')
 
@@ -85,7 +85,7 @@ eric_accuracies = [16, 15, 16, 13, 16, 13, 12, 15, 13, 16, 12, 18, 15, 12, 14]
 plt.figure(figsize=(8, 6))
 plt.hist(eric_accuracies, bins=range(min(eric_accuracies), max(eric_accuracies) + 2), align='left', edgecolor='black', color='skyblue')
 
-plt.title('Human Accuracy (from 25)')
+plt.title('Human Accuracy')
 plt.xlabel('Accuracies')
 plt.ylabel('Count')
 
