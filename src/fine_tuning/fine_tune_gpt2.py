@@ -21,11 +21,9 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
 
-# Custom function to prepare data for language modeling
 def load_and_tokenize_data(data_folder, tokenizer):
     inputs = []
     
-    # Read all files in the data folder
     for file_name in os.listdir(data_folder):
         file_path = os.path.join(data_folder, file_name)
         if file_path == data_file:
@@ -33,33 +31,19 @@ def load_and_tokenize_data(data_folder, tokenizer):
                 conversation = f.read().strip()
                 input_text = ""
                 
-                # Split on two newlines to get individual prompt-response pairs
                 for pair in conversation.split("\n\n"):
-                    if pair.strip():  # Ensure we skip any blank segments
+                    if pair.strip():
                         formatted_text = pair
-                        # print(pair)
-                        # split_index = pair.find("Bruno Dumont:")
-                        # if split_index == -1:
-                        #     prompt = pair
-                        #     response = ""
-                        # else:
-                        #     prompt = pair[:split_index]
-                        #     response = pair[split_index:]
-                        # formatted_text = f"{prompt}\n{response}\n\n"  # Maintain the structure
                         input_text += formatted_text
 
-                # Encode and add to the list of inputs
                 if input_text:
                     inputs.append(input_text)
 
-    # Tokenize all inputs in a single batch
     tokenized_inputs = tokenizer(inputs, return_tensors="pt", padding=True, truncation=True)
     return tokenized_inputs
 
-# Tokenize the dataset
 tokenized_data = load_and_tokenize_data(data_folder, tokenizer)
 
-# Prepare a dataset class to handle the data for Trainer
 class CustomTextDataset(torch.utils.data.Dataset):
     def __init__(self, tokenized_data):
         self.input_ids = tokenized_data['input_ids']
@@ -74,10 +58,8 @@ class CustomTextDataset(torch.utils.data.Dataset):
             'attention_mask': self.attention_mask[idx]
         }
 
-# Create the dataset
 dataset = CustomTextDataset(tokenized_data)
 
-# Set up training arguments
 training_args = TrainingArguments(
     output_dir=output_dir,
     overwrite_output_dir=True,
@@ -91,10 +73,8 @@ training_args = TrainingArguments(
     fp16=True
 )
 
-# Initialize data collator
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# Initialize Trainer
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -102,11 +82,8 @@ trainer = Trainer(
     train_dataset=dataset,
 )
 
-# Train the model
-# torch.cuda.empty_cache()
 trainer.train()
 
-# Save the fine-tuned model
 model.save_pretrained(output_dir, safe_serialization=False)
 tokenizer.save_pretrained(output_dir)
 

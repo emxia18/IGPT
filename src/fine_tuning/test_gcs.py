@@ -23,8 +23,6 @@ def download_model_from_gcs(bucket_name, model_path, local_dir):
 
 download_model_from_gcs(bucket_name, model_path, local_dir)
 
-hf_token = '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'
-
 model = AutoModelForCausalLM.from_pretrained(local_dir, use_auth_token=hf_token)
 tokenizer = AutoTokenizer.from_pretrained(local_dir, use_auth_token=hf_token)
 model.eval()

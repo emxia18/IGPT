@@ -9,8 +9,6 @@ local_path = 'IGPT/data/bruno/new_processed_data.jsonl'
 dataset = load_dataset('json', data_files=local_path, streaming=True)
 print(dataset)
 
-hf_token = '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'
-
 model_name = "meta-llama/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=hf_token)
 tokenizer.pad_token = tokenizer.eos_token
