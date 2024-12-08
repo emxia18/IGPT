@@ -1,13 +1,11 @@
 import joblib
 
-# Load the saved model
 model = joblib.load("message_classifier_model_emily.joblib")
 print("Model loaded successfully.")
 
-# Function to classify a list of messages with probabilities
 def classify_messages_with_probabilities(messages):
     probabilities = model.predict_proba(messages)
-    class_labels = model.classes_  # To get the class labels ["Emily", "Someone Else"]
+    class_labels = model.classes_
     results = []
     for message, prob in zip(messages, probabilities):
         result = {
@@ -46,10 +44,6 @@ messages_to_classify = [
     "maybe later, it sounds nice tho"
 ]
 
-
-
-
-# Classify the messages
 results = classify_messages_with_probabilities(messages_to_classify)
 for result in results:
     print(f"Message: {result['message']}\nProbabilities - Emily: {result['Emily']:.2f}, Someone Else: {result['Someone Else']:.2f}\n")
