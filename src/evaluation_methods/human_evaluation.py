@@ -42,7 +42,7 @@ ax.set_xticklabels(categories)
 ax.legend(title="Accuracy")
 
 plt.tight_layout()
-plt.savefig("IGPT/src/evaluation_methods/emily_category_accuracy.png")
+plt.savefig("IGPT/src/evaluation_methods/graphs/emily_category_accuracy.png")
 
 accuracies = [22,19,16,16,16,16,15,15,14,14,14,14,13,13,12,12,11,10]
 
@@ -53,34 +53,41 @@ plt.title('Human Accuracy')
 plt.xlabel('Accuracies')
 plt.ylabel('Count')
 
-plt.savefig("IGPT/src/evaluation_methods/emily_accuracy.png")
+plt.savefig("IGPT/src/evaluation_methods/graphs/emily_accuracy.png")
 
-gpt_corr, gpt_inc = 11+11+9+6+8+11+6+5+9+7+8+11+4+10, 4+3+6+9+7+4+9+10+6+8+7+4+11+5
-og_corr, og_inc = 8+10+14+1+13+14+8+11+6+7, 7+5+1+14+2+1+7+4+9+8
+categories = ("Eric ICL", "Eric", "Emily ICL", "Emily Fine Tuned", "Emily")
+egpt_corr, egpt_inc = 15+11+14+12+9+12+15+8+6+12+10+11+15+5+14, 5+9+5+8+11+8+5+12+14+8+10+9+5+15+6
+eog_corr, eog_inc = 11+13+18+1+16+18+12+12+10+9, 9+7+2+19+4+2+8+8+10+11
 
-categories = ("GPT", "Eric")
-correct = [gpt_corr, og_corr]
-incorrect = [gpt_inc, og_inc]
+nb_corr = [9 / 15, 7 / 10, 5 / 9, 7 / 9, 4 / 6]
+nb_inc = [6 / 15, 3 / 10, 4 / 9, 2 / 9, 2 / 6]
+
+correct = [egpt_corr / (egpt_corr + egpt_inc), eog_corr / (eog_corr + eog_inc), gpt_corr / (gpt_corr + gpt_inc), bot_corr / (bot_corr + bot_inc), og_corr / (og_corr + og_inc)]
+incorrect = [egpt_inc / (egpt_corr + egpt_inc), eog_inc / (eog_corr + eog_inc), gpt_inc / (gpt_corr + gpt_inc), bot_inc / (bot_corr + bot_inc), og_inc / (og_corr + og_inc)]
 
 x = np.arange(len(categories))
+bar_width = 0.3
+space = 0.05
 
-fig, ax = plt.subplots(figsize=(5, 5
-))
+fig, ax = plt.subplots(figsize=(8, 6))
 
-bar1 = ax.bar(x, correct, label='Correct', color='lightgreen', edgecolor='black')
-bar2 = ax.bar(x, incorrect, bottom=correct, label='Incorrect', color='lightcoral', edgecolor='black')
+bar1 = ax.bar(x - (bar_width + space) / 2, correct, bar_width, label='Human Correct', color='lightgreen', edgecolor='black')
+bar2 = ax.bar(x - (bar_width + space) / 2, incorrect, bar_width, bottom=correct, label='Human Incorrect', color='lightcoral', edgecolor='black')
+
+bar3 = ax.bar(x + (bar_width + space) / 2, nb_corr, bar_width, label='Naive Bayes Correct', color='darkgreen', edgecolor='black')
+bar4 = ax.bar(x + (bar_width + space) / 2, nb_inc, bar_width, bottom=nb_corr, label='Naive Bayes Incorrect', color='darkred', edgecolor='black')
 
 ax.set_xlabel("Categories")
-ax.set_ylabel("Question Count")
-ax.set_title("Human Evaluator Accuracy Distribution")
+ax.set_ylabel("Question Percentage")
+ax.set_title("Human vs Naive Bayes Evaluator Accuracy Distribution")
 ax.set_xticks(x)
 ax.set_xticklabels(categories)
-ax.legend(title="Accuracy", bbox_to_anchor=(1.05, 1), loc='upper left')
+ax.legend(title="Accuracy")
 
 plt.tight_layout()
-plt.savefig("IGPT/src/evaluation_methods/eric_category_accuracy.png")
+plt.savefig("IGPT/src/evaluation_methods/graphs/category_accuracy.png")
 
-eric_accuracies = [16, 15, 16, 13, 16, 13, 12, 15, 13, 16, 12, 18, 15, 12, 14]
+eric_accuracies = [16, 15, 16, 13, 16, 13, 12, 15, 13, 16, 12, 18, 15, 12, 14, 16, 16, 14, 11]
 
 plt.figure(figsize=(8, 6))
 plt.hist(eric_accuracies, bins=range(min(eric_accuracies), max(eric_accuracies) + 2), align='left', edgecolor='black', color='skyblue')
@@ -89,4 +96,4 @@ plt.title('Human Accuracy')
 plt.xlabel('Accuracies')
 plt.ylabel('Count')
 
-plt.savefig("IGPT/src/evaluation_methods/eric_accuracy.png")
+plt.savefig("IGPT/src/evaluation_methods/graphs/eric_accuracy.png")
